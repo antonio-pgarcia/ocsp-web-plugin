@@ -1,0 +1,32 @@
+CC_CMD=/usr/bin/gcc -fPIC -DNET_SSL -D_REENTRANT -DSOLARIS -D_POSIX_PTHREAD_SEMANTICS
+LD_SHAREDCMD=/usr/bin/gcc -shared
+LD=/usr/ccs/bin/ld -L/etc/lib -ldl
+LDSO=$(LD) -G
+
+all:
+prepare:
+
+NS_HOME=/usr/apps/netscape
+INCLUDEDIR=$(NS_HOME)/plugins/include
+EXTRA_LDDEFINES=-lssl -lcrypto -R'$$ORIGIN'/lib
+
+
+OBJS = ocsp.o
+
+INCLUDE_FLAGS=-I$(INCLUDEDIR) -I$(INCLUDEDIR)/base -I$(INCLUDEDIR)/frame -I$(INCLUDEDIR)/nspr -I/usr/local/ssl/include
+COMMON_DEFS=-DMCC_HTTPD -DXP_UNIX -DSPAPI20
+
+
+all: va-ocsp.so
+
+
+va-ocsp.so: $(OBJS)
+        $(MAKE) prepare
+        $(LDSO) $(OBJS) -o ocsp.so $(EXTRA_LDDEFINES)
+
+.c.o:
+        $(CC_CMD) -D_BUILD_NSAPI_ $(COMMON_DEFS) $(INCLUDE_FLAGS) -c $<
+
+clean:
+        rm $(OBJS) va-ocsp.so $(EXTRA_CLEAN)
+
