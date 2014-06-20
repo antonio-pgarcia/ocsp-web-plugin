@@ -1,8 +1,10 @@
 #!/usr/bin/bash 
 
 #--------------------------------------------------------------------------------
-# @dumpca.sh script - dumps iplanet trusted ca certificate
+# @dumpca.sh script - dumps iplanet trusted ca certificates
+# 
 # HolisticView - 2007
+# @author Antonio Prestes Garcia
 #--------------------------------------------------------------------------------
 
 RM=/usr/bin/rm
